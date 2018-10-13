@@ -127,8 +127,7 @@ $(".character").on("click", function() {
 
         roster.splice(unselectedPlayers.indexOf(player), 1);
         unselectedEnemies = unselectedPlayers;
-
-        $("#game")
+        
         game.changeState(ENEMY_SELECT);
     } else if (game.state === ENEMY_SELECT) {
         defender = searchForId(unselectedEnemies, elementId);

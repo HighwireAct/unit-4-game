@@ -4,13 +4,13 @@
 
 html {
     text-align: center;
-    background: url("../images/stadium.png") no-repeat center center fixed;
 }
 
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
     color: white;
     text-shadow: 2px 2px black;
+    background-image: url("../images/stadium.png");
 }
 
 h1,
@@ -43,6 +43,7 @@ header {
     display: inline-block;
     animation-duration: 1s;
     border-radius: 10px;
+    transition: transform 2s;
 }
 
 .selectable:hover {
