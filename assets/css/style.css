@@ -8,7 +8,11 @@ html {
 }
 
 h1,
-h2 {
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin-bottom: .5rem;
 }
 
@@ -24,14 +28,20 @@ h2 {
 .character {
     width: 200px;
     position: relative;
+    margin: 0 10px;
     display: inline-block;
     font-family: 'Helvetica', 'Arial', sans-serif;
     color: white;
     text-shadow: 2px 2px black;
+    animation-duration: 1s;
 }
 
 .character img {
-    width: 90%;
+    max-width: 90%;
     margin: 0 auto;
     overflow: hidden;
+}
+
+#logo {
+    max-width: 200px;
 }

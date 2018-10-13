@@ -16,17 +16,19 @@ const DEFENDER = 3;
 
 // Game object - controls the game's state
 let game = {
-    state: CHAR_SELECT
+    state: CHAR_SELECT,
+    changeState: function(state) {
+        game.state = state;
+    }
 };
 
 // NAME: Character Creator; QUIRK: Constructs character objects!
-function Character(name, id, image, attackPoints, attackGain, counterPoints, hpMax) {
+function Character(name, id, image, attackPoints, counterPoints, hpMax) {
     // Properties
     this.name = name;
     this.id = id;
     this.image = image;
     this.attackPoints = attackPoints;
-    this.attackGain = attackGain;
     this.counterPoints = counterPoints;
     this.hpMax = hpMax;
     this.hpCurrent = hpMax;
@@ -36,9 +38,10 @@ function Character(name, id, image, attackPoints, attackGain, counterPoints, hpM
     // Methods
     this.attack = function(target) {
         target.hpCurrent -= this.attackPoints;
-        this.attackPoints += this.attackGain;
+        this.attackPoints += this.attackPoints;
         target.update();
     };
+    // Add object div to DOM
     this.create = function() {
         let characterDiv = $("<div>");
         let characterImg = $("<img>");
@@ -51,7 +54,7 @@ function Character(name, id, image, attackPoints, attackGain, counterPoints, hpM
         characterName.text(this.name);
         characterHp.text(this.hpString);
 
-        $("body").append(characterDiv);
+        $("#game-area").append(characterDiv);
         $(characterDiv).append(characterImg);
         $(characterDiv).append(characterName);
         $(characterDiv).append(characterHp);
@@ -61,6 +64,9 @@ function Character(name, id, image, attackPoints, attackGain, counterPoints, hpM
         this.hpCurrent = Math.max(0, this.hpCurrent); // Keep HP from going into negative
         this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
         $(`#${this.id}`).find("h2").text(this.hpString);
+    }
+    this.destroy = function() {
+        $(`#${this.id}`).remove();
     }
 }
 
@@ -73,19 +79,29 @@ function imgPathFormatter(string) {
 // GAME LOGIC
 // ------------
 
-let unselected = []; // Unselected character array
-let unselectedEnemies = []; // Unselected character array
+// Create character objects
+let deku = new Character("Deku", 0, "deku", 10, 20, 120);
+let bakugou = new Character("Bakugou", 1, "bakugou", 20, 30, 110);
+let ochako = new Character("Ochako", 2, "ochako", 15, 20, 110);
+let iida = new Character("Iida", 3, "iida", 15, 20, 150);
+let froppy = new Character("Froppy", 4, "froppy", 15, 30, 90);
+
+// Create arrays to hold characters
+let roster = [deku, bakugou, ochako, iida, froppy] // Unselected character array
+let unselectedEnemies = null; // Unselected enemy array
 let player = null; // Player array
 let defender = null; // Defender array
 
-let deku = new Character("Deku", 0, "deku", 10, 12, 20, 120);
-let bakugou = new Character("Bakugou", 1, "bakugou", 20, 7, 30, 110);
-let ochako = new Character("Ochako", 2, "ochako", 15, 10, 20, 110);
-let iida = new Character("Iida", 3, "iida", 15, 6, 20, 150);
-let froppy = new Character("Froppy", 4, "froppy", 15, 7, 30, 90);
-
-unselected = [deku, bakugou, ochako, iida, froppy];
-
-for (i = 0; i < unselected.length; i++) {
-    unselected[i].create();
+for (i = 0; i < roster.length; i++) {
+    roster[i].create();
 }
+
+// STATE: CHAR_SELECT
+/**
+ * INTERACTION: In this state, the player is able to select one of the characters
+ * from the roster to play as. The selected character will be bound
+ * to the "player" variable and popped off the "roster" array, while
+ * the remaining array will be bound to the unselectedEnemies variable
+ * 
+ * DRAWING: All players contained within game
+ */
