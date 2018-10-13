@@ -7,6 +7,12 @@ html {
     background: url("../images/stadium.png") no-repeat center center fixed;
 }
 
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
 h1,
 h2,
 h3,
@@ -25,15 +31,16 @@ h2 {
     font-size: 2rem;
 }
 
+header {
+    margin: .5rem 0;
+}
+
 .character {
     width: 200px;
     position: relative;
     padding: 10px 0px;
     margin: 0 10px;
     display: inline-block;
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    color: white;
-    text-shadow: 2px 2px black;
     animation-duration: 1s;
     border-radius: 10px;
 }

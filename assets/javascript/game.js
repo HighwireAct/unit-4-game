@@ -1,4 +1,3 @@
-
 // --------------
 // INITIALIZATION
 // --------------
@@ -73,14 +72,21 @@ function Character(name, id, image, attackPoints, counterPoints, hpMax) {
         this.visible = !(this.visible);
         if (this.visible) { $(`#${this.id}`).css("display", "inline-block"); }
         else { $(`#${this.id}`).css("display", "none"); }
-        console.log(this.visible);
-        console.dir($(`#${this.id}`));
+    }
+    this.changeState = function (state) {
+        this.state = state;
     }
 }
 
 // NAME: Image Path Formatter; QUIRK: Formats image paths for me!
 function imgPathFormatter(string) {
     return `assets/images/${string}.png`;
+}
+
+function searchForId(array, id) {
+    for (i = 0; i < array.length; i++) {
+        if (array[i].id === id)  { return array[i]; }
+    }
 }
 
 // ------------
@@ -95,31 +101,58 @@ let iida = new Character("Iida", 3, "iida", 15, 20, 150);
 let froppy = new Character("Froppy", 4, "froppy", 15, 30, 90);
 
 // Create arrays to hold characters
-let roster = [deku, bakugou, ochako, iida, froppy] // Unselected character array
+let roster = [deku, bakugou, ochako, iida, froppy]; // Base character roster
+let unselectedPlayers = roster;
 let unselectedEnemies = null; // Unselected enemy array
 let player = null; // Player array
 let defender = null; // Defender array
 
-if (game.state === CHAR_SELECT) {
-    for (i = 0; i < roster.length; i++) {
-        roster[i].create();
-    }
+$(document).ready(function() {
+
+$("#game-area").prepend("<h1>CHOOSE YOUR FIGHTER</h1>");
+
+// Put characters on page at beginning
+for (i = 0; i < roster.length; i++) {
+    roster[i].create();
 }
 
+// Callback function for clicking on characters in different contexts
 $(".character").on("click", function() {
+    let elementId = +$(this).attr("id");
+    console.log(elementId);
     if (game.state === CHAR_SELECT) {
+        player = searchForId(unselectedPlayers, elementId);
+        player.toggleVisible();
+        player.changeState(PLAYER);
+
+        roster.splice(unselectedPlayers.indexOf(player), 1);
+        unselectedEnemies = unselectedPlayers;
+
+        $("#game")
         game.changeState(ENEMY_SELECT);
+    } else if (game.state === ENEMY_SELECT) {
+        defender = searchForId(unselectedEnemies, elementId);
+        defender.changeState(DEFENDER);
+
+        unselectedEnemies.splice(unselectedEnemies.indexOf(defender), 1);
+
+        game.changeState(BATTLE);
     }
 });
+
 // STATE: CHAR_SELECT
 /**
  * INTERACTION: In this state, the player is able to select one of the characters
  * from the roster to play as. The selected character will be bound
- * to the "player" variable and popped off the "roster" array, while
- * the remaining array will be bound to the unselectedEnemies variable
+ * to the "player" variable and spliced off the "roster" array, while
+ * the remaining roster array will be bound to the unselectedEnemies variable
  * 
  * DRAWING: All players are contained within game-area div. First,
  * the heading is drawn, and then the character objects
  */
 
- // STATE: 
+ // STATE: ENEMY_SELECT
+ /**
+  * INTERACTION: The player can now choose from the
+  */
+});
