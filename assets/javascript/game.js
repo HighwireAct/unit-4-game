@@ -107,8 +107,6 @@ let unselectedEnemies = null; // Unselected enemy array
 let player = null; // Player array
 let defender = null; // Defender array
 
-$(document).ready(function() {
-
 $("#game-area").prepend("<h1>CHOOSE YOUR FIGHTER</h1>");
 
 // Put characters on page at beginning
@@ -125,15 +123,20 @@ $(".character").on("click", function() {
         player.toggleVisible();
         player.changeState(PLAYER);
 
-        roster.splice(unselectedPlayers.indexOf(player), 1);
+        unselectedPlayers.splice(unselectedPlayers.indexOf(player), 1); // Remove player from selectable list
         unselectedEnemies = unselectedPlayers;
-        
+
+        console.log(player);
+        console.log(unselectedEnemies);
         game.changeState(ENEMY_SELECT);
     } else if (game.state === ENEMY_SELECT) {
         defender = searchForId(unselectedEnemies, elementId);
         defender.changeState(DEFENDER);
 
         unselectedEnemies.splice(unselectedEnemies.indexOf(defender), 1);
+
+        console.log(defender);
+        console.log(unselectedEnemies);
 
         game.changeState(BATTLE);
     }
@@ -154,4 +157,3 @@ $(".character").on("click", function() {
  /**
   * INTERACTION: The player can now choose from the
   */
-});
