@@ -28,12 +28,14 @@ h2 {
 .character {
     width: 200px;
     position: relative;
+    padding: 10px 0px;
     margin: 0 10px;
     display: inline-block;
     font-family: 'Helvetica', 'Arial', sans-serif;
     color: white;
     text-shadow: 2px 2px black;
     animation-duration: 1s;
+    border-radius: 10px;
 }
 
 .selectable:hover {
@@ -46,9 +48,8 @@ h2 {
     overflow: hidden;
 }
 
-.player {
+.player h1 {
     color: limegreen;
-    text-shadow: 2px 2px white;
 }
 
 #logo {

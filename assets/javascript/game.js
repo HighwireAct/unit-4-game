@@ -1,3 +1,4 @@
+
 // --------------
 // INITIALIZATION
 // --------------
@@ -34,6 +35,7 @@ function Character(name, id, image, attackPoints, counterPoints, hpMax) {
     this.hpCurrent = hpMax;
     this.state = UNSELECTED;
     this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
+    this.visible = true;
 
     // Methods
     this.attack = function(target) {
@@ -66,8 +68,13 @@ function Character(name, id, image, attackPoints, counterPoints, hpMax) {
         this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
         $(`#${this.id}`).find("h2").text(this.hpString);
     }
-    this.destroy = function() {
-        $(`#${this.id}`).remove();
+    // Toggle character visibility
+    this.toggleVisible = function() {
+        this.visible = !(this.visible);
+        if (this.visible) { $(`#${this.id}`).css("display", "inline-block"); }
+        else { $(`#${this.id}`).css("display", "none"); }
+        console.log(this.visible);
+        console.dir($(`#${this.id}`));
     }
 }
 
@@ -99,6 +106,11 @@ if (game.state === CHAR_SELECT) {
     }
 }
 
+$(".character").on("click", function() {
+    if (game.state === CHAR_SELECT) {
+        game.changeState(ENEMY_SELECT);
+    }
+});
 // STATE: CHAR_SELECT
 /**
  * INTERACTION: In this state, the player is able to select one of the characters
@@ -109,3 +121,5 @@ if (game.state === CHAR_SELECT) {
  * DRAWING: All players are contained within game-area div. First,
  * the heading is drawn, and then the character objects
  */
+
+ // STATE: 
