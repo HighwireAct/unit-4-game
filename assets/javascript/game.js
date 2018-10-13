@@ -1,3 +1,7 @@
+// --------------
+// INITIALIZATION
+// --------------
+
 // Constants for game states
 const CHAR_SELECT = 0;
 const ENEMY_SELECT = 1;
@@ -17,6 +21,7 @@ let game = {
 
 // NAME: Character Creator; QUIRK: Constructs character objects!
 function Character(name, id, image, attackPoints, attackGain, counterPoints, hpMax) {
+    // Properties
     this.name = name;
     this.id = id;
     this.image = image;
@@ -26,23 +31,46 @@ function Character(name, id, image, attackPoints, attackGain, counterPoints, hpM
     this.hpMax = hpMax;
     this.hpCurrent = hpMax;
     this.state = UNSELECTED;
-}
+    this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
 
-// NAME: Draw Character; QUIRK: Draws a character on the screen!
-function drawCharacter(character) {
-    let characterDiv = $("<div>");
-    let characterImg = $("<img>");
-    characterDiv.addClass("character");
-    characterDiv.attr("id", character.id);
-    characterImg.attr("src", imgPathFormatter(character.image));
-    $("body").append(characterDiv);
-    $(characterDiv).append(characterImg);
+    // Methods
+    this.attack = function(target) {
+        target.hpCurrent -= this.attackPoints;
+        this.attackPoints += this.attackGain;
+        target.update();
+    };
+    this.create = function() {
+        let characterDiv = $("<div>");
+        let characterImg = $("<img>");
+        let characterName = $("<h1>");
+        let characterHp = $("<h2>");
+
+        characterDiv.addClass("character");
+        characterDiv.attr("id", this.id);
+        characterImg.attr("src", imgPathFormatter(this.image));
+        characterName.text(this.name);
+        characterHp.text(this.hpString);
+
+        $("body").append(characterDiv);
+        $(characterDiv).append(characterImg);
+        $(characterDiv).append(characterName);
+        $(characterDiv).append(characterHp);
+    }
+    this.update = function() {
+        this.hpCurrent = Math.max(0, this.hpCurrent); // Keep HP from going into negative
+        this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
+        $(`#${this.id}`).find("h2").text(this.hpString);
+    }
 }
 
 // NAME: Image Path Formatter; QUIRK: Formats image paths for me!
 function imgPathFormatter(string) {
     return `assets/images/${string}.png`;
 }
+
+// ------------
+// GAME LOGIC
+// ------------
 
 let unselected = []; // Unselected character array
 let unselectedEnemies = []; // Unselected character array
@@ -55,5 +83,8 @@ let ochako = new Character("Ochako", 2, "ochako", 15, 10, 20, 110);
 let iida = new Character("Iida", 3, "iida", 15, 6, 20, 150);
 let froppy = new Character("Froppy", 4, "froppy", 15, 7, 30, 90);
 
-console.log(deku);
-drawCharacter(deku);
+unselected = [deku, bakugou, ochako, iida, froppy];
+
+for (i = 0; i < unselected.length; i++) {
+    unselected[i].create();
+}
