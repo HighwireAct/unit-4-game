@@ -56,6 +56,7 @@ function Character(name, id, image, attackPoints, attackGain, counterPoints, hpM
         $(characterDiv).append(characterName);
         $(characterDiv).append(characterHp);
     }
+    // Updates HP
     this.update = function() {
         this.hpCurrent = Math.max(0, this.hpCurrent); // Keep HP from going into negative
         this.hpString = `HP ${this.hpCurrent} / ${this.hpMax}`;
