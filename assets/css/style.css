@@ -36,10 +36,19 @@ h2 {
     animation-duration: 1s;
 }
 
+.selectable:hover {
+    background-color: rgba(240, 248, 255, 0.473);
+}
+
 .character img {
     max-width: 90%;
     margin: 0 auto;
     overflow: hidden;
+}
+
+.player {
+    color: limegreen;
+    text-shadow: 2px 2px white;
 }
 
 #logo {

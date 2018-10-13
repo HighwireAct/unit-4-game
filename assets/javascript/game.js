@@ -49,6 +49,7 @@ function Character(name, id, image, attackPoints, counterPoints, hpMax) {
         let characterHp = $("<h2>");
 
         characterDiv.addClass("character");
+        characterDiv.addClass("selectable");
         characterDiv.attr("id", this.id);
         characterImg.attr("src", imgPathFormatter(this.image));
         characterName.text(this.name);
@@ -92,8 +93,10 @@ let unselectedEnemies = null; // Unselected enemy array
 let player = null; // Player array
 let defender = null; // Defender array
 
-for (i = 0; i < roster.length; i++) {
-    roster[i].create();
+if (game.state === CHAR_SELECT) {
+    for (i = 0; i < roster.length; i++) {
+        roster[i].create();
+    }
 }
 
 // STATE: CHAR_SELECT
@@ -103,5 +106,6 @@ for (i = 0; i < roster.length; i++) {
  * to the "player" variable and popped off the "roster" array, while
  * the remaining array will be bound to the unselectedEnemies variable
  * 
- * DRAWING: All players contained within game
+ * DRAWING: All players are contained within game-area div. First,
+ * the heading is drawn, and then the character objects
  */
